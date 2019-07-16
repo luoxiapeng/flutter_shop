@@ -1,4 +1,4 @@
-# flutter_shop
+# demo
 
 A new Flutter project.
 
