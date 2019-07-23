@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import './page/Index_page.dart';
+import 'package:dio/dio.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,5 +17,14 @@ class MyApp extends StatelessWidget {
       home: IndexPage(),
     );
   }
-}
 
+  void getHttp() async {
+    try {
+      Response response;
+      response = await Dio().get("https://www.easy-mock.com/mock/5c60131a4bed3a6342711498/baixing/dabaojian?name=大胸妹");
+      print(response);
+    } catch (e) {
+      print(e)
+    }
+  }
+}
