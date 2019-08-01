@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_scree';
 import '../service/service_method.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,84 +19,64 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     getHomePageContent().then((val) {
-      homePageContent = val.toString();
+      setState(() {
+        homePageContent = val.toString();
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('首页'),
-      ),
-      body: SingleChildScrollView(
-        child: Text(homePageContent),
+        appBar: AppBar(
+          title: Text('百姓生活+'),
+        ),
+        // 异步回调数据组件
+        body: FutureBuilder(
+            // 获取异步函数
+            future: getHomePageContent(),
+            // 获取道上下文以及返回的数据
+            builder: (context, snapshot) {
+              // 判断数据是否存在
+              if (snapshot.hasData) {
+                // 将数据进行json转换
+                var data = json.decode(snapshot.data.toString());
+                // 将数据进行list转换
+                List<Map> swiperDataList =
+                    (data['data']['slides'] as List).cast(); // 顶部轮播组件数
+                return Column(
+                  children: <Widget>[SwiperDiy(swiperDataList: swiperDataList)],
+                );
+              }
+            }));
+  }
+}
+
+// 轮播图组件，使用插件
+class SwiperDiy extends StatelessWidget {
+  final List swiperDataList;
+  // 获取到传递过来的list
+  const SwiperDiy({Key key, this.swiperDataList}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    // 适配屏幕插件
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
+
+    return Container(
+      // 适配屏幕的宽高
+      height: ScreenUtil().setHeight(333),
+      width: ScreenUtil().setWidth(750),
+      child: Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          return Image.network(
+            "${swiperDataList[index]['image']}",
+            fit: BoxFit.fill,
+          );
+        },
+        itemCount: swiperDataList.length,
+        pagination: new SwiperPagination(),
+        autoplay: true,
       ),
     );
   }
-  // TextEditingController typeController = TextEditingController();
-  // String showText = '欢迎你来到美好人间';
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Container(
-  //     child: Scaffold(
-  //       appBar: AppBar(
-  //         title: Text('动态渲染'),
-  //       ),
-  //       body: Container(
-  //           child: Column(
-  //         children: <Widget>[
-  //           TextField(
-  //             controller: typeController,
-  //             decoration: InputDecoration(
-  //                 labelText: '美好人间',
-  //                 helperText: '请输入美女类型',
-  //                 contentPadding: EdgeInsets.all(10.0)),
-  //             autofocus: false,
-  //           ),
-  //           RaisedButton(
-  //             child: Text('选择类型'),
-  //             onPressed: () {
-  //               _choseType();
-  //             },
-  //           ),
-  //           Text(
-  //             showText,
-  //             overflow: TextOverflow.ellipsis,
-  //             maxLines: 1,
-  //           )
-  //         ],
-  //       )),
-  //     ),
-  //   );
-  // }
-
-  // void _choseType() {
-  //   print('请开始选择你的类型............');
-  //   if (typeController.text.toString() == '') {
-  //     showDialog(
-  //         context: context,
-  //         builder: (context) => AlertDialog(title: Text('美女类型不能为空')));
-  //   } else {
-  //     GetHttp(typeController.text.toString()).then((val) {
-  //       setState(() {
-  //         showText = val['data']['name'];
-  //       });
-  //     });
-  //   }
-  // }
-
-  // Future GetHttp(String TypeText) async {
-  //   try {
-  //     Response response;
-  //     var data = {'name': TypeText};
-  //     response = await Dio().get(
-  //         'https://www.easy-mock.com/mock/5c60131a4bed3a6342711498/baixing/dabaojian',
-  //         queryParameters: data);
-
-  //     return response.data;
-  //   } catch (e) {
-  //     return print(e);
-  //   }
-  // }
 }
