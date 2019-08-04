@@ -58,11 +58,10 @@ class _IndexPageState extends State<IndexPage> {
             setState(() {
               currentIndex = index;
               currentPage = tabBodies[currentIndex];
-              
             });
           },
         ),
-        //  保持页面状态
+        //  保持页面状态不被回滚
         body: IndexedStack(
             // 当前的索引
             index: currentIndex,
