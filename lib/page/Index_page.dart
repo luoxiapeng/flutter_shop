@@ -58,6 +58,7 @@ class _IndexPageState extends State<IndexPage> {
             setState(() {
               currentIndex = index;
               currentPage = tabBodies[currentIndex];
+              
             });
           },
         ),
