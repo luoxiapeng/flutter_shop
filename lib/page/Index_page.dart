@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'home_page.dart';
 import 'cart_page.dart';
 import 'member_page.dart';
@@ -21,7 +22,12 @@ class _IndexPageState extends State<IndexPage> {
     BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.profile_circled), title: Text('会员中心'))
   ];
-  final List tabBodies = [HomePage(), CategoryPage(), CartPage(), MemberPage()];
+  final List<Widget> tabBodies = [
+    HomePage(),
+    CategoryPage(),
+    CartPage(),
+    MemberPage()
+  ];
   int currentIndex = 0;
   var currentPage;
   @override
@@ -35,6 +41,11 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 适配屏幕插件
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
+    print('设备宽度:${ScreenUtil.screenWidth}');
+    print('设备高度:${ScreenUtil.screenHeight}');
+    print('设备像素密度:${ScreenUtil.pixelRatio}');
     return Scaffold(
         backgroundColor: Color.fromRGBO(233, 245, 245, 1.0),
         bottomNavigationBar: BottomNavigationBar(
@@ -50,6 +61,10 @@ class _IndexPageState extends State<IndexPage> {
             });
           },
         ),
-        body: currentPage);
+        //  保持页面状态
+        body: IndexedStack(
+            // 当前的索引
+            index: currentIndex,
+            children: tabBodies));
   }
 }
