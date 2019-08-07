@@ -48,23 +48,17 @@ class _HomePageState extends State<HomePage>
                 // 将数据进行json转换
                 var data = json.decode(snapshot.data.toString());
                 // 将数据进行list转换
-                List<Map> swiperDataList =
-                    (data['data']['slides'] as List).cast(); // 顶部轮播组件数
+                List<Map> swiperDataList =(data['data']['slides'] as List).cast(); // 顶部轮播组件数
 
                 // 导航栏数据
-                List<Map> navigatorList =
-                    (data['data']['category'] as List).cast();
-
+                List<Map> navigatorList =(data['data']['category'] as List).cast();
                 // 删除多余的数据
-
                 if (navigatorList.length > 10) {
                   navigatorList.removeRange(10, navigatorList.length);
                 }
 
                 // 广告栏
-                String advertesPicture =
-                    data['data']['advertesPicture']['PICTURE_ADDRESS'];
-
+                String advertesPicture =data['data']['advertesPicture']['PICTURE_ADDRESS'];
                 // 拨打电话
                 String leaderImage = data['data']['shopInfo']['leaderImage'];
                 String leaderPhone = data['data']['shopInfo']['leaderPhone'];
@@ -73,16 +67,31 @@ class _HomePageState extends State<HomePage>
                 List<Map> recommendList =
                     (data['data']['recommend'] as List).cast();
 
-                print('=======>${leaderPhone}');
+                //获取楼层数据
+                String floor1Title =data['data']['floor1Pic']['PICTURE_ADDRESS'];
+                String floor2Title =data['data']['floor2Pic']['PICTURE_ADDRESS'];
+                String floor3Title =data['data']['floor3Pic']['PICTURE_ADDRESS'];
+                List<Map> floor1=(data['data']['floor1'] as List).cast(); //楼层1商品图片
+                List<Map> floor2 = (data['data']['floor2'] as List).cast(); //楼层2商品图片
+                List<Map> floor3=(data['data']['floor3'] as List).cast(); //楼层3商品图片
+                
+
                 return SingleChildScrollView(
-                    child: Column(
+                  child: Column(
                   children: <Widget>[
                     SwiperDiy(swiperDataList: swiperDataList),
                     TopNavigator(navigatorList: navigatorList),
                     AdBanner(advertesPicture: advertesPicture),
-                    LeaderPhone(
-                        leaderImage: leaderImage, leaderPhone: leaderPhone),
+                    LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone),
                     Recommend(recommendList: recommendList),
+
+                    FloorTitle(picture_address:floor1Title),
+                    FloorContent(floorGoodsList:floor1),
+                    FloorTitle(picture_address:floor2Title),
+                    FloorContent(floorGoodsList:floor2),
+                    FloorTitle(picture_address:floor3Title),
+                    FloorContent(floorGoodsList:floor3)
+
                   ],
                 ));
               }
@@ -132,7 +141,9 @@ class TopNavigator extends StatelessWidget {
             item['image'],
             width: ScreenUtil().setWidth(95),
           ),
-          Text(item['mallCategoryName'])
+          Text(
+            item['mallCategoryName']
+          )
         ],
       ),
     );
@@ -233,12 +244,13 @@ class Recommend extends StatelessWidget {
                   Border(left: BorderSide(width: 0.5, color: Colors.black12))),
           child: Column(
             children: <Widget>[
-              Image.network(recommendList[index]['image']),
+              Image.network(recommendList[index]['image'],fit: BoxFit.fill),
               Text('￥${recommendList[index]['mallPrice']}'),
               Text(
                 '￥${recommendList[index]['Price']}',
                 style: TextStyle(
-                    decoration: TextDecoration.lineThrough, color: Colors.grey),
+                    decoration: TextDecoration.lineThrough, color: Colors.grey
+                ),
               )
             ],
           )),
@@ -256,3 +268,73 @@ class Recommend extends StatelessWidget {
     );
   }
 }
+
+
+// 楼层标题
+
+class FloorTitle extends StatelessWidget {
+  final String picture_address;
+  const FloorTitle({Key key,this.picture_address}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: Image.network(picture_address),
+    );
+  }
+}
+//楼层商品
+
+class FloorContent extends StatelessWidget {
+  // 数据列表
+  final List floorGoodsList;
+
+  const FloorContent({Key key,this.floorGoodsList}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          _firstRow(),
+          _otherGoods()
+        ],
+      ),
+    );
+  }
+  Widget _firstRow(){
+    return Row(
+      children: <Widget>[
+        _goodIthem(floorGoodsList[0]),
+        Column(
+          children: <Widget>[
+            _goodIthem(floorGoodsList[1]),
+            _goodIthem(floorGoodsList[2])
+          ],
+        )
+
+      ],
+    );
+  }
+  Widget _otherGoods(){
+    return Row(
+      children: <Widget>[
+        _goodIthem(floorGoodsList[3]),
+         _goodIthem(floorGoodsList[4])
+
+      ],
+    );
+  }
+  Widget _goodIthem(Map goods){
+    return Container(
+      width: ScreenUtil().setWidth(375),
+      child: InkWell(
+        onTap: (){print('点击了楼层商品');},
+        child: Image.network(goods['image']),
+      ),
+    );
+  }
+}
+
+// 火爆商品
