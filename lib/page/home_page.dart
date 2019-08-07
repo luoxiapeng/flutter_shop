@@ -24,15 +24,11 @@ class _HomePageState extends State<HomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    getHomePageContent().then((val) {
-      setState(() {
-        homePageContent = val.toString();
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var formData = {'lon': '115.02932', 'lat': '35.76189'};
     return Scaffold(
         appBar: AppBar(
           title: Text('百姓生活+'),
@@ -40,7 +36,7 @@ class _HomePageState extends State<HomePage>
         // 异步回调数据组件
         body: FutureBuilder(
             // 获取异步函数
-            future: getHomePageContent(),
+            future: request('homePageContext',formData),
             // 获取道上下文以及返回的数据
             builder: (context, snapshot) {
               // 判断数据是否存在
@@ -90,7 +86,8 @@ class _HomePageState extends State<HomePage>
                     FloorTitle(picture_address:floor2Title),
                     FloorContent(floorGoodsList:floor2),
                     FloorTitle(picture_address:floor3Title),
-                    FloorContent(floorGoodsList:floor3)
+                    FloorContent(floorGoodsList:floor3),
+                    HotGoods()
 
                   ],
                 ));
@@ -338,3 +335,23 @@ class FloorContent extends StatelessWidget {
 }
 
 // 火爆商品
+class HotGoods extends StatefulWidget {
+  HotGoods({Key key}) : super(key: key);
+
+  _HotGoodsState createState() => _HotGoodsState();
+}
+
+class _HotGoodsState extends State<HotGoods> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    request('homePageBelowConten', 1);
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child:Text('1111'),
+    );
+  }
+}

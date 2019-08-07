@@ -38,3 +38,26 @@ Future getHomePageBeloConten() async {
     return print('=========> ${e}');
   }
 }
+// 封装请求
+Future request(url,formData) async {
+  try {
+    Response response;
+    Dio dio = new Dio();
+    dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded');
+    // 判断有没有参数
+    if(formData == null){
+      response = await dio.post(servicePath[url]);
+    }else{
+      response = await dio.post(servicePath[url], data: formData);
+    }
+   
+    if (response.statusCode == 200) {
+      print(response.data);
+      return response.data;
+    } else {
+      throw Exception('后端接口报错了');
+    }
+  } catch (e) {
+    return print('=========> ${e}');
+  }
+}
