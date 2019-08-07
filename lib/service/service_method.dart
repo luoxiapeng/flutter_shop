@@ -23,6 +23,7 @@ Future getHomePageContent() async {
 }
 Future getHomePageBeloConten() async {
   try {
+    print('开始获取数据...............');
     Response response;
     Dio dio = new Dio();
     dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded');
@@ -39,8 +40,9 @@ Future getHomePageBeloConten() async {
   }
 }
 // 封装请求
-Future request(url,formData) async {
+Future request(url,{formData}) async {
   try {
+    print('开始获取数据...............');
     Response response;
     Dio dio = new Dio();
     dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded');
@@ -52,7 +54,7 @@ Future request(url,formData) async {
     }
    
     if (response.statusCode == 200) {
-      print(response.data);
+      // print(response.data);
       return response.data;
     } else {
       throw Exception('后端接口报错了');
