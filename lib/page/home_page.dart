@@ -63,8 +63,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                 String leaderPhone = data['data']['shopInfo']['leaderPhone'];
 
                 // 获取商品推荐数据
-                List<Map> recommendList =
-                    (data['data']['recommend'] as List).cast();
+                List<Map> recommendList =(data['data']['recommend'] as List).cast();
 
                 //获取楼层数据
                 String floor1Title =data['data']['floor1Pic']['PICTURE_ADDRESS'];
