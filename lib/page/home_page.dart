@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 // import 'package:flutter_scree';
 import '../service/service_method.dart';
 
@@ -75,24 +75,38 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                 List<Map> floor3=(data['data']['floor3'] as List).cast(); //楼层3商品图片
                 
 
-                return SingleChildScrollView(
-                  child: Column(
-                  children: <Widget>[
-                    SwiperDiy(swiperDataList: swiperDataList),
-                    TopNavigator(navigatorList: navigatorList),
-                    AdBanner(advertesPicture: advertesPicture),
-                    LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone),
-                    Recommend(recommendList: recommendList),
+                return EasyRefresh(
+                    child: ListView(
+                      children: <Widget>[
+                        SwiperDiy(swiperDataList: swiperDataList),
+                        TopNavigator(navigatorList: navigatorList),
+                        AdBanner(advertesPicture: advertesPicture),
+                        LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone),
+                        Recommend(recommendList: recommendList),
 
-                    FloorTitle(picture_address:floor1Title),
-                    FloorContent(floorGoodsList:floor1),
-                    FloorTitle(picture_address:floor2Title),
-                    FloorContent(floorGoodsList:floor2),
-                    FloorTitle(picture_address:floor3Title),
-                    FloorContent(floorGoodsList:floor3),
-                    _hotGoods()
-                  ],
-                ));
+                        FloorTitle(picture_address:floor1Title),
+                        FloorContent(floorGoodsList:floor1),
+                        FloorTitle(picture_address:floor2Title),
+                        FloorContent(floorGoodsList:floor2),
+                        FloorTitle(picture_address:floor3Title),
+                        FloorContent(floorGoodsList:floor3),
+                        _hotGoods()
+                      ],
+                    ),
+                    onLoad:() async{
+                     print('开始加载更多');
+                     var formPage={'page': page};
+                     await request('homePageBelowConten',formData:formPage).then((val){
+                        var data=json.decode(val.toString());
+                        List<Map> newGoodsList = (data['data'] as List ).cast();
+                        setState(() {
+                          hotGoodsList.addAll(newGoodsList);
+                          page++; 
+                        });
+                      });
+                    //  await _getHotGoods();
+                    }
+                  );
               }
             }));
   }
@@ -101,11 +115,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
      request('homePageBelowConten',formData:formPage).then((val){
        var data=json.decode(val.toString());
        List<Map> newGoodsList = (data['data'] as List ).cast();
-       print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-       print('********************>${newGoodsList}');
        setState(() {
          hotGoodsList.addAll(newGoodsList);
-         print('################### ${hotGoodsList}');
          page++; 
        });
      });
@@ -420,28 +431,3 @@ class FloorContent extends StatelessWidget {
   }
 }
 
-// // 火爆商品
-// class HotGoods extends StatefulWidget {
-  
-//   HotGoods({Key key}) : super(key: key);
-
-//   _HotGoodsState createState() => _HotGoodsState();
-// }
-
-// class _HotGoodsState extends State<HotGoods> {
- 
-  
-  
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     // _getHotGoods();
-//     // request('homePageBelowConten', 1);
-//   }
-  
-//   @override
-//   Widget build(BuildContext context) {
-//     return _hotGoods();
-//   }
-// }
