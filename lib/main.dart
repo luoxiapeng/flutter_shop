@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import './page/Index_page.dart';
 import 'package:dio/dio.dart';
+// 状态库引入
+import 'package:provide/provide.dart';
+import './Provide/counter.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // 初始化
+  var counter =Counter();
+  var providers  =Providers();
+  //将函数存放在provide,counter发生变化后
+   providers
+    ..provide(Provider<Counter>.value(counter));
+  runApp(ProviderNode(child:MyApp(),providers:providers));
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
