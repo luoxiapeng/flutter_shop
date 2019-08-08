@@ -24,9 +24,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   bool get wantKeepAlive => true;
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     _getHotGoods();
+    super.initState();
+    
   }
 
   @override
@@ -101,9 +101,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
      request('homePageBelowConten',formData:formPage).then((val){
        var data=json.decode(val.toString());
        List<Map> newGoodsList = (data['data'] as List ).cast();
+       print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
        print('********************>${newGoodsList}');
        setState(() {
          hotGoodsList.addAll(newGoodsList);
+         print('################### ${hotGoodsList}');
          page++; 
        });
      });
@@ -120,55 +122,60 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         ),
         child: Text('火爆专区'),
    );
-  // Widget _wrapList(){
-  //   if(hotGoodsList.length!=0){
-  //     List<Widget>  listWidget = hotGoodsList.map((val){
-  //       return InkWell(
-  //         onTap:(){print('点击了火爆商品');},
-  //         child: Container(
-  //           color: Colors.white,
-  //           width: ScreenUtil().scaleWidth(372),
-  //           margin:EdgeInsets.only(bottom:3.0),
-  //           child: Column(
-  //             children: <Widget>[
-  //               Image.network(val['image'],width: ScreenUtil().setWidth(375)),
-  //               Text(
-  //                 val['name'],
-  //                 maxLines: 1,
-  //                 overflow: TextOverflow.ellipsis,
-  //                 style: TextStyle(
-  //                   color: Colors.pink,
-  //                   fontSize: ScreenUtil().setSp(26)
-  //                 ),
-  //               ),
-  //               Row(
-  //                 children: <Widget>[
-  //                    Text('￥${val['mallPrice']}'),
-  //                    Text('￥${val['Price']}',style: TextStyle(color: Colors.grey,decoration: TextDecoration.lineThrough),)
-  //                 ],
-  //               )
-          
-  //             ],
-  //           ),
-  //         )
-  //       );
-  //     }).toList();
+  Widget _wrapList(){
 
-  //    return Wrap(
-  //       spacing: 2,
-  //       children: listWidget,
-  //     );
-  //   }else{
-  //     return Text('');
-  //   }
-    
-  // }
+    if(hotGoodsList.length!=0){
+       List<Widget> listWidget = hotGoodsList.map((val){
+          
+          return InkWell(
+            onTap:(){print('点击了火爆商品');},
+            child: 
+            Container(
+              width: ScreenUtil().setWidth(372),
+              color:Colors.white,
+              padding: EdgeInsets.all(5.0),
+              margin:EdgeInsets.only(bottom:3.0),
+              child: Column(
+                children: <Widget>[
+                  Image.network(val['image'],width: ScreenUtil().setWidth(375),),
+                  Text(
+                    val['name'],
+                    maxLines: 1,
+                    overflow:TextOverflow.ellipsis ,
+                    style: TextStyle(color:Colors.pink,fontSize: ScreenUtil().setSp(26)),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text('￥${val['mallPrice']}'),
+                      Text(
+                        '￥${val['price']}',
+                        style: TextStyle(color:Colors.black26,decoration: TextDecoration.lineThrough),
+                        
+                      )
+                    ],
+                  )
+                ],
+              ), 
+            )
+           
+          );
+
+      }).toList();
+
+      return Wrap(
+        spacing: 2,
+        children: listWidget,
+      );
+    }else{
+      return Text(' ');
+    }
+  }
   Widget _hotGoods(){
     return Container(  
           child:Column(
             children: <Widget>[
               hotTitle,
-              // _wrapList(),
+              _wrapList(),
             ],
           )   
     );
