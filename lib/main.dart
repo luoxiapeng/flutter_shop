@@ -4,14 +4,17 @@ import 'package:dio/dio.dart';
 // 状态库引入
 import 'package:provide/provide.dart';
 import './Provide/counter.dart';
+import './Provide/child_category.dart';
 
 void main() {
   // 初始化
   var counter =Counter();
   var providers  =Providers();
+  var childCategory=ChildCategory();
   //将函数存放在provide,counter发生变化后
    providers
-    ..provide(Provider<Counter>.value(counter));
+    ..provide(Provider<Counter>.value(counter))
+    ..provide(Provider<ChildCategory>.value(childCategory));
   runApp(ProviderNode(child:MyApp(),providers:providers));
 }
 

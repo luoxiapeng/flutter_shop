@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +28,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     super.initState();
     
   }
-
+  GlobalKey _footerKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     var formData = {'lon': '115.02932', 'lat': '35.76189'};
@@ -76,6 +75,17 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                 
 
                 return EasyRefresh(
+                    footer: ClassicalFooter(
+                      key:_footerKey,
+                      bgColor:Colors.white,
+                      textColor: Colors.pink,
+                      infoColor: Colors.pink,
+                      showInfo: true,
+                      noMoreText: '没有更多数据了',
+                      loadText:'加载中',
+                      loadReadyText:'上拉加载....',
+                      
+                    ),
                     child: ListView(
                       children: <Widget>[
                         SwiperDiy(swiperDataList: swiperDataList),
@@ -106,7 +116,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                       });
                     //  await _getHotGoods();
                     }
+                    
                   );
+              }else{
+                return Center(
+                  child: Text('加载中......'),
+                );
               }
             }));
   }
