@@ -5,16 +5,19 @@ import 'package:dio/dio.dart';
 import 'package:provide/provide.dart';
 import './Provide/counter.dart';
 import './Provide/child_category.dart';
+import './Provide/category_goods_list.dart';
 
 void main() {
-  // 初始化
+  var childCategory= ChildCategory();
+  var categoryGoodsListProvide= CategoryGoodsListProvide();
+
   var counter =Counter();
   var providers  =Providers();
-  var childCategory=ChildCategory();
-  //将函数存放在provide,counter发生变化后
-   providers
-    ..provide(Provider<Counter>.value(counter))
-    ..provide(Provider<ChildCategory>.value(childCategory));
+  providers
+    ..provide(Provider<ChildCategory>.value(childCategory))
+    ..provide(Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide))
+    ..provide(Provider<Counter>.value(counter));
+
   runApp(ProviderNode(child:MyApp(),providers:providers));
 }
 

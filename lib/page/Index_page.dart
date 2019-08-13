@@ -38,7 +38,6 @@ class _IndexPageState extends State<IndexPage> {
   @override
   // 初始化函数
   void initState() {
-    // TODO: implement initState
     // 第一次首页
     currentPage = tabBodies[currentIndex];
     super.initState();

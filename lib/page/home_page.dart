@@ -87,21 +87,21 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                       
                     ),
                     child: ListView(
-                      children: <Widget>[
-                        SwiperDiy(swiperDataList: swiperDataList),
-                        TopNavigator(navigatorList: navigatorList),
-                        AdBanner(advertesPicture: advertesPicture),
-                        LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone),
-                        Recommend(recommendList: recommendList),
+                        children: <Widget>[
+                          SwiperDiy(swiperDataList: swiperDataList),
+                          TopNavigator(navigatorList: navigatorList),
+                          AdBanner(advertesPicture: advertesPicture),
+                          LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone),
+                          Recommend(recommendList: recommendList),
 
-                        FloorTitle(picture_address:floor1Title),
-                        FloorContent(floorGoodsList:floor1),
-                        FloorTitle(picture_address:floor2Title),
-                        FloorContent(floorGoodsList:floor2),
-                        FloorTitle(picture_address:floor3Title),
-                        FloorContent(floorGoodsList:floor3),
-                        _hotGoods()
-                      ],
+                          FloorTitle(picture_address:floor1Title),
+                          FloorContent(floorGoodsList:floor1),
+                          FloorTitle(picture_address:floor2Title),
+                          FloorContent(floorGoodsList:floor2),
+                          FloorTitle(picture_address:floor3Title),
+                          FloorContent(floorGoodsList:floor3),
+                          _hotGoods()
+                        ],
                     ),
                     onLoad:() async{
                      print('开始加载更多');
@@ -327,14 +327,16 @@ class Recommend extends StatelessWidget {
 
   // 商品横向列表
   Widget _recommedList() {
-    return Container(
-      height: ScreenUtil().setHeight(330),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: recommendList.length,
-        itemBuilder: (context, index) {
-          return _item(index);
-        },
+    return Expanded(
+      child: Container(
+        height: ScreenUtil().setHeight(330),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: recommendList.length,
+          itemBuilder: (context, index) {
+            return _item(index);
+          },
+        ),
       ),
     );
   }
