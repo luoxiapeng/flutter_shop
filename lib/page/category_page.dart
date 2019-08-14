@@ -90,6 +90,7 @@ Widget _leftInkWel(int index){
         var childList = list[index].bxMallSubDto;
         var categoryId= list[index].mallCategoryId;
         Provide.value<ChildCategory>(context).getChildCategory(childList);
+        // 点击请求接口
         _getGoodList(categoryId:categoryId);
       },
       child: Container(
@@ -124,8 +125,7 @@ void _getCategory()async{
     });
   }
    //得到商品列表数据
-void _getGoodList({String categoryId}) {
-     
+void _getGoodList({String categoryId}) {  
     var data={
       'categoryId':'4',
       'categorySubId':'',
@@ -139,8 +139,8 @@ void _getGoodList({String categoryId}) {
         if(goodsList.data==null){
           Provide.value<CategoryGoodsListProvide>(context).getGoodsList([]);
         }else{
+          // 将数据存到共享库中
           Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
-          
         }
     });
   }
