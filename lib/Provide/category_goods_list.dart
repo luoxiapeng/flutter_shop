@@ -13,4 +13,3 @@ class CategoryGoodsListProvide with ChangeNotifier{
       notifyListeners();
     }
 }
-
