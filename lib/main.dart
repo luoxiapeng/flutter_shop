@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import './page/Index_page.dart';
 import 'package:dio/dio.dart';
+import 'package:fluro/fluro.dart';
 // 状态库引入
 import 'package:provide/provide.dart';
 import './Provide/counter.dart';
 import './Provide/child_category.dart';
 import './Provide/category_goods_list.dart';
+import './routers/routes.dart';
+import './routers/application.dart';
 
 void main() {
+  
   var childCategory= ChildCategory();
   var categoryGoodsListProvide= CategoryGoodsListProvide();
-
+  
   var counter =Counter();
   var providers  =Providers();
   providers
@@ -25,9 +29,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // 路由配置
+    final router=Router();
+    Routes.configureRoutes(router);
+    Application.router=router;
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: '百姓生活+',
       debugShowCheckedModeBanner: false,
+      // 路由配置
+      onGenerateRoute: Application.router.generator,
       theme: ThemeData(
         primarySwatch: Colors.pink,
       ),
