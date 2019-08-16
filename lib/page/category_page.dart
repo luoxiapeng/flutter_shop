@@ -3,7 +3,7 @@ import '../service/service_method.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../model/category.dart';
 import '../model/categoryGoodsList.dart';
 
@@ -353,7 +353,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   }
    //上拉加载更多的方法
   void _getMoreList(){
-     
+    // 页码加1
     Provide.value<ChildCategory>(context).addPage();
      var data={
       'categoryId':Provide.value<ChildCategory>(context).categoryId,
@@ -366,6 +366,15 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
         CategoryGoodsListModel goodsList=  CategoryGoodsListModel.fromJson(data);
        
         if(goodsList.data==null){
+         Fluttertoast.showToast(
+              msg: "没有更多数据了",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIos: 1,
+              backgroundColor: Colors.pink,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
          Provide.value<ChildCategory>(context).changeNoMore('没有更多了');
         }else{
            
