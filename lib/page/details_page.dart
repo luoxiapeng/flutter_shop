@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
 import '../Provide/details_info.dart';
 
+// 页面拆分
+import './details_page/details_top_area.dart';
+
 class DetailsPage extends StatelessWidget {
   // const DetailsPage({Key key}) : super(key: key);
   
@@ -29,7 +32,7 @@ class DetailsPage extends StatelessWidget {
             return Container(
               child: Column(
                 children: <Widget>[
-                   Text('${goodsId}')
+                   DetailsTopArea()
                 ],
               ),
             );
