@@ -224,9 +224,14 @@ class SwiperDiy extends StatelessWidget {
       width: ScreenUtil().setWidth(750),
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return Image.network(
-            "${swiperDataList[index]['image']}",
-            fit: BoxFit.fill,
+          return InkWell(
+            onTap: (){
+               Application.router.navigateTo(context,"/detail?id=${swiperDataList[index]['goodsId']}");
+            },
+            child: Image.network(
+              "${swiperDataList[index]['image']}",
+              fit: BoxFit.fill,
+            ),
           );
         },
         itemCount: swiperDataList.length,
@@ -323,8 +328,7 @@ class Recommend extends StatelessWidget {
       child: Text('商品推荐', style: TextStyle(color: Colors.pink)),
       decoration: BoxDecoration(
           color: Colors.white,
-          border:
-              Border(bottom: BorderSide(width: 0.5, color: Colors.black12))),
+          border:Border(bottom: BorderSide(width: 0.5, color: Colors.black12))),
     );
   }
 
@@ -337,7 +341,7 @@ class Recommend extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: recommendList.length,
           itemBuilder: (context, index) {
-            return _item(index);
+            return _item(context,index);
           },
         ),
       ),
@@ -346,17 +350,19 @@ class Recommend extends StatelessWidget {
 
   // 每一件商品
 
-  Widget _item(index) {
+  Widget _item(context,index) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Application.router.navigateTo(context,"/detail?id=${recommendList[index]['goodsId']}");
+      },
       child: Container(
           height: ScreenUtil().setHeight(330),
           width: ScreenUtil().setWidth(250),
           padding: EdgeInsets.all(8.0),
           decoration: BoxDecoration(
               color: Colors.white,
-              border:
-                  Border(left: BorderSide(width: 0.5, color: Colors.black12))),
+              border:Border(left: BorderSide(width: 0.5, color: Colors.black12))
+          ),
           child: Column(
             children: <Widget>[
               Image.network(recommendList[index]['image'],fit: BoxFit.fill),
@@ -412,40 +418,42 @@ class FloorContent extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          _firstRow(),
-          _otherGoods()
+          _firstRow(context),
+          _otherGoods(context)
         ],
       ),
     );
   }
-  Widget _firstRow(){
+  Widget _firstRow(context){
     return Row(
       children: <Widget>[
-        _goodIthem(floorGoodsList[0]),
+        _goodIthem(context,floorGoodsList[0]),
         Column(
           children: <Widget>[
-            _goodIthem(floorGoodsList[1]),
-            _goodIthem(floorGoodsList[2])
+            _goodIthem(context,floorGoodsList[1]),
+            _goodIthem(context,floorGoodsList[2])
           ],
         )
 
       ],
     );
   }
-  Widget _otherGoods(){
+  Widget _otherGoods(context){
     return Row(
       children: <Widget>[
-        _goodIthem(floorGoodsList[3]),
-         _goodIthem(floorGoodsList[4])
+        _goodIthem(context,floorGoodsList[3]),
+         _goodIthem(context,floorGoodsList[4])
 
       ],
     );
   }
-  Widget _goodIthem(Map goods){
+  Widget _goodIthem(context,Map goods){
     return Container(
       width: ScreenUtil().setWidth(375),
       child: InkWell(
-        onTap: (){print('点击了楼层商品');},
+        onTap: (){
+          Application.router.navigateTo(context, "/detail?id=${goods['goodsId']}");
+        },
         child: Image.network(goods['image']),
       ),
     );
