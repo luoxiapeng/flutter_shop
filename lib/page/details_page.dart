@@ -6,6 +6,7 @@ import '../Provide/details_info.dart';
 import './details_page/details_top_area.dart';
 import './details_page/details_explain.dart';
 import './details_page/details_tabbar.dart';
+import './details_page/detals_web.dart';
 
 class DetailsPage extends StatelessWidget {
   // const DetailsPage({Key key}) : super(key: key);
@@ -36,7 +37,8 @@ class DetailsPage extends StatelessWidget {
                 children: <Widget>[
                    DetailsTopArea(),
                    DetailsExplain(),
-                   DetailsTabBar()
+                   DetailsTabBar(),
+                   DetailsWeb()
                 ],
               ),
             );
