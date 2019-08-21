@@ -73,7 +73,7 @@ class CartItem extends StatelessWidget {
         
         child: Column(
           children: <Widget>[
-            Text('￥${item.price}'),
+            Text('￥${item.price}',style: TextStyle(color: Colors.pink)),
             Container(
               child: InkWell(
                 onTap: (){},
