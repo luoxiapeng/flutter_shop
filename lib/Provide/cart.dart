@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provide/provide.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/cartInfo.dart';
@@ -39,10 +38,11 @@ class CartProvide with ChangeNotifier{
       //   'images':images
       // });
       Map<String,dynamic> newGoods={
-        'goodsId':goodsId,
-        'goodsName':goodsName,
-        'count':count,
-        'images':images
+         'goodsId':goodsId,
+          'goodsName':goodsName,
+          'count':count,
+          'price':price,
+          'images':images
       };
       tempList.add(newGoods);
       cartList.add(new CartInfoMode.fromJson(newGoods));

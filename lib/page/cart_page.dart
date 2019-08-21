@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Provide/cart.dart';
 
+// 页面拆分
+import './cart_page/cart_item.dart';
+
 class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
 
@@ -28,13 +31,11 @@ class _CartPageState extends State<CartPage> {
             return ListView.builder(
                itemCount: cartList.length,
                itemBuilder: (context,index){
-                 return ListTile(
-                  title: Text(cartList[index].goodsName),
-                 );
+                 return CartItem(cartList[index]);
                },
             );
           }else{
-            return Text('${cartList}');
+            return Text('加载中.....');
           }
         },
       ),
