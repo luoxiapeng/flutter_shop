@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import '../Provide/counter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
@@ -10,54 +10,57 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-     body: Center(
-       child: Column(
-         children: <Widget>[
-            Number(),
-            MyButton()
-         ],
-       ),
-     ),
-    );
-  }
-}
-class Number extends StatelessWidget {
-  const Number({Key key}) : super(key: key);
 
+  List<String> testList =[];
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top:200),
-      child:Provide<Counter>(
-        builder: (context,child,counter){
-          return Text(
-            '${counter.value}',
-            style: TextStyle(fontSize: ScreenUtil().setSp(50)),
-          );
-        },
-      )
+      child: Column(
+        children: <Widget>[
+          Container(
+            height: 500.0,
+            child: ListView.builder(
+              itemCount: testList.length,
+              itemBuilder: (context,index){
+              return ListTile(
+                title: Text(testList[index]),
+              );
+              },
+            )
+          ),
+          RaisedButton(
+            onPressed: (){_add();},
+            child: Text('增加'),
+          ),
+          RaisedButton(
+            onPressed: (){_clear();},
+            child: Text('清空'),
+          )
+        ],
+      ),
+       
     );
   }
-}
-
-class MyButton  extends StatelessWidget {
-  const MyButton ({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: RaisedButton(
-        onPressed: (){
-          // 调用状态库的方法
-          Provide.value<Counter>(context).increment();
-        },
-        child: Text(
-          '递增'
-        ),
-      )
-    );
+  void _add() async{
+   SharedPreferences prefs=await SharedPreferences.getInstance();
+   String temp="技术胖是最胖的";
+   testList.add(temp);
+   prefs.setStringList('testInfo', testList);
+   _show();
+  }
+  void _show() async{
+   SharedPreferences prefs=await SharedPreferences.getInstance();
+   setState(() {
+     if(prefs.getStringList('testInfo')!=null){
+       testList=prefs.getStringList('testInfo');
+     } 
+   });
+  }
+  void _clear() async{
+   SharedPreferences prefs=await SharedPreferences.getInstance();
+   prefs.remove('testInfo');
+   setState(() {
+    testList=[]; 
+   });
   }
 }
