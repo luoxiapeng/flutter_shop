@@ -32,14 +32,21 @@ class _CartPageState extends State<CartPage> {
             print('--------------${cartList}');
             return Stack(
               children: <Widget>[
-                Container(
-                 margin: EdgeInsets.only(bottom: 50.0),
-                 child: ListView.builder(
-                    itemCount: cartList.length,
-                    itemBuilder: (context,index){
-                      return CartItem(cartList[index]);
-                    },
-                  ),
+                // 规范范型页面,点击删除也买你跟着变化
+                Provide<CartProvide>(
+                  builder: (context,child,childCategory){
+                    // 重新获取一次
+                    cartList= Provide.value<CartProvide>(context).cartList;
+                    return Container(
+                    margin: EdgeInsets.only(bottom: 50.0),
+                    child: ListView.builder(
+                        itemCount: cartList.length,
+                        itemBuilder: (context,index){
+                          return CartItem(cartList[index]);
+                        },
+                      ),
+                    );
+                  }, 
                 ),
                 Positioned(
                   bottom: -5,
