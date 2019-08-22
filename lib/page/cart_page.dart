@@ -8,6 +8,7 @@ import '../Provide/cart.dart';
 import './cart_page/cart_item.dart';
 import './cart_page/cart_bottom.dart';
 
+
 class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
 
