@@ -6,6 +6,7 @@ import '../Provide/cart.dart';
 
 // 页面拆分
 import './cart_page/cart_item.dart';
+import './cart_page/cart_bottom.dart';
 
 class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
@@ -28,12 +29,27 @@ class _CartPageState extends State<CartPage> {
           List cartList=Provide.value<CartProvide>(context).cartList;
           if(snapshot.hasData){
             print('--------------${cartList}');
-            return ListView.builder(
-               itemCount: cartList.length,
-               itemBuilder: (context,index){
-                 return CartItem(cartList[index]);
-               },
+            return Stack(
+              children: <Widget>[
+                Container(
+                 margin: EdgeInsets.only(bottom: 50.0),
+                 child: ListView.builder(
+                    itemCount: cartList.length,
+                    itemBuilder: (context,index){
+                      return CartItem(cartList[index]);
+                    },
+                  ),
+                ),
+                Positioned(
+                  bottom: -5,
+                  left: 0,
+                  child:CartBottom(),
+                )
+              ],
+              
             );
+            
+            
           }else{
             return Text('加载中.....');
           }
