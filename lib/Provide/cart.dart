@@ -6,6 +6,10 @@ import '../model/cartInfo.dart';
 class CartProvide with ChangeNotifier{
   
   String cartString="[]";
+  //  计算总价格
+   double allPrice= 0;
+  //  计算数量
+   int allGoodsCount =0;
   // 购物车数据
   List<CartInfoMode> cartList=[];
   save(goodsId,goodsName,count,price,images) async{
@@ -69,7 +73,14 @@ class CartProvide with ChangeNotifier{
        cartList=[];
      }else{
        List<Map> tempList= (json.decode(cartString.toString()) as List).cast();
+      //  每次进来这个方法要初始化一下总价格和数量
+       allPrice=0;
+       allGoodsCount=0;
        tempList.forEach((item){
+          if(item['isCheck']){
+             allPrice+=(item['count']*item['price']);
+             allGoodsCount+=item['count'];
+          }
           cartList.add(new CartInfoMode.fromJson(item));
        });
 
