@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../model/cartInfo.dart';
 
 class CartProvide with ChangeNotifier{
@@ -152,12 +153,47 @@ class CartProvide with ChangeNotifier{
 
     // 遍历将所有的项赋值成true
     for(var item in tempList){
-      var newItem=item;
-      newItem['isCheck']=isCheck;
+      var newItem=item; //赋值数据，再进行修改，flutter不支持直接修改数据
+      newItem['isCheck']=isCheck;//改变选中状态
       newList.add(newItem);
     }
     cartString= json.encode(newList).toString();//形成字符串
     prefs.setString('cartInfo', cartString);//进行持久化
     await getCartInfo();
+  }
+  //购物车加减操作
+  addOrReduceAction(var cartItem,String todo) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cartString=prefs.getString('cartInfo');  //得到持久化的字符串
+    List<Map> tempList= (json.decode(cartString.toString()) as List).cast();
+    int tempIndex =0;
+    int changeIndex=0;
+    tempList.forEach((item){
+         if(item['goodsId']==cartItem.goodsId){
+          changeIndex=tempIndex; 
+         }
+         tempIndex++;
+    });
+    if(todo=='add'){
+      cartItem.count++;
+    }else if(cartItem.count==1){
+      Fluttertoast.showToast(
+          msg: "受不了，商品不能再少了",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.pink,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }else if(cartItem.count>1){
+      cartItem.count--;
+    }
+    tempList[changeIndex]=cartItem.toJson();
+    cartString= json.encode(tempList).toString();
+    prefs.setString('cartInfo', cartString);//
+    await getCartInfo();
+    
+
   }
 }
