@@ -27,16 +27,32 @@ class CartProvide with ChangeNotifier{
      //声明变量，用于判断购物车中是否已经存在此商品ID
     var isHave=false;//默认为没有
     int ival=0;//用于进行循环的索引使用
+    
+
+    //把商品总数量设置为0
+    allPrice=0;
+    allGoodsCount=0;
+
+
+
    //进行循环，找出是否已经存在该商品
     tempList.forEach((item){
       if(item['goodsId']==goodsId){
-        // tempList[ival]['count']=item['count']+1;
+        tempList[ival]['count']=item['count']+1;
         cartList[ival].count++;
         isHave=true;
       }
+      // 如果为选中就将价格和数量赋值
+      if(item['isCheck']){
+        allPrice+= (cartList[ival].price* cartList[ival].count);
+        allGoodsCount+= cartList[ival].count;
+      }
       ival++;
     });
-     //  如果没有，进行增加
+    
+
+
+     //  如果相同的商品进行增加
     if(!isHave){
       // tempList.add({
       //   'goodsId':goodsId,
@@ -54,6 +70,9 @@ class CartProvide with ChangeNotifier{
       };
       tempList.add(newGoods);
       cartList.add(new CartInfoMode.fromJson(newGoods));
+      
+      allPrice+=(count*price);
+      allGoodsCount+=count;
     }
     //把字符串进行encode操作，
     cartString=json.encode(tempList).toString();
@@ -61,6 +80,7 @@ class CartProvide with ChangeNotifier{
     print(cartList.toString());
     // 加到缓存
     prefs.setString('cartInfo', cartString);
+    notifyListeners();
 
 
   }
