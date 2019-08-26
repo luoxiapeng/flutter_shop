@@ -46,27 +46,30 @@ class DetailsBottom extends StatelessWidget {
               Provide<CartProvide>(
                 builder: (context,child,val){
                   int goodsCount= Provide.value<CartProvide>(context).allGoodsCount;
-
-                  return Positioned(
-                     right: 0,
-                     top: 0,
-                     child: Container(
-                       padding: EdgeInsets.fromLTRB(6.0, 3.0, 6.0, 3.0),
-                       decoration: BoxDecoration(
-                         color: Colors.pink,
-                         border: Border.all(width: 2,color: Colors.white),
-                         borderRadius: BorderRadius.circular(12.0)
-                       ),
-                       child: Text(
-                         '${goodsCount}',
-                         style: TextStyle(
-                           color: Colors.white,
-                           fontSize: ScreenUtil().setSp(30)
-                         ),
-                       ),
-                     ),
-                     
-                  );
+                  if(goodsCount>0){
+                    return Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(6.0, 3.0, 6.0, 3.0),
+                        decoration: BoxDecoration(
+                          color: Colors.pink,
+                          border: Border.all(width: 2,color: Colors.white),
+                          borderRadius: BorderRadius.circular(12.0)
+                        ),
+                        child: Text(
+                          '${goodsCount}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: ScreenUtil().setSp(30)
+                          ),
+                        ),
+                      ),
+                    );
+                  }else{
+                    return Text('');
+                  }
+                  
                 },
               )
            ]),
