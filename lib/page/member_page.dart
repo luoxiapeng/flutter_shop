@@ -31,7 +31,9 @@ class MemberPage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 30), 
+            margin: EdgeInsets.only(top: 20), 
+            height: ScreenUtil().setHeight(200),
+            width: ScreenUtil().setWidth(200),
             child: ClipOval(
               child:Image.network('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566818292437&di=e215b1119c3a34cb4dc816848e0fc8d5&imgtype=0&src=http%3A%2F%2Fwx1.sinaimg.cn%2Fbmiddle%2F78ed3187ly1fc1kkydec8j205k05kwep.jpg',fit: BoxFit.cover,)
             ),
