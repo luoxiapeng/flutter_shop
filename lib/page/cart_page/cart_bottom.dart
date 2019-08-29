@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provide/provide.dart';
 import '../../Provide/cart.dart';
 
+import '../../routers/application.dart';
+
 class CartBottom extends StatelessWidget {
   const CartBottom({Key key}) : super(key: key);
 
@@ -103,7 +105,9 @@ class CartBottom extends StatelessWidget {
      width: ScreenUtil().setWidth(180),
      padding: EdgeInsets.only(left: 10),
      child: InkWell(
-       onTap: (){},
+       onTap: (){
+         Application.router.navigateTo(context,"/pay");
+       },
        child: Container(
          padding: EdgeInsets.all(10.0),
          alignment: Alignment.center,
