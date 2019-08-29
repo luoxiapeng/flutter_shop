@@ -31,6 +31,7 @@ class CartBottom extends StatelessWidget {
   Widget selectAllBtn(context){
     bool isAllCheck=Provide.value<CartProvide>(context).isAllCheck;
     return Container(
+      width: ScreenUtil().setWidth(140),
       child: Row(
         children: <Widget>[
           Checkbox(
@@ -99,7 +100,7 @@ class CartBottom extends StatelessWidget {
   Widget goButton(context){
     int allGoodsCount = Provide.value<CartProvide>(context).allGoodsCount;
     return Container(
-     width: ScreenUtil().setWidth(160),
+     width: ScreenUtil().setWidth(180),
      padding: EdgeInsets.only(left: 10),
      child: InkWell(
        onTap: (){},
