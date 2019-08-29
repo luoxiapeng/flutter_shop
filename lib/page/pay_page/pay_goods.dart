@@ -73,7 +73,7 @@ class payGoods extends StatelessWidget {
                  child: Text('规格:默认'),
                ),
                Container(
-                 width: ScreenUtil().setWidth(400),
+                 width: ScreenUtil().setWidth(435),
                  alignment: Alignment.topLeft,
                  child: Row(
                     children: <Widget>[
