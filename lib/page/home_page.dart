@@ -388,7 +388,7 @@ class Recommend extends StatelessWidget {
               Image.network(recommendList[index]['image'],fit: BoxFit.fill),
               Text('￥${recommendList[index]['mallPrice']}'),
               Text(
-                '￥${recommendList[index]['Price']}',
+                '￥${recommendList[index]['price']}',
                 style: TextStyle(
                     decoration: TextDecoration.lineThrough, color: Colors.grey
                 ),
