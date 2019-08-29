@@ -1,3 +1,6 @@
+import 'package:demo/Provide/child_category.dart';
+import 'package:demo/Provide/currentIndex.dart';
+import 'package:demo/model/category.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -7,6 +10,9 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 // import 'package:flutter_scree';
 import '../service/service_method.dart';
 import '../routers/application.dart';
+import 'package:provide/provide.dart';
+import '../Provide/child_category.dart';
+import '../model/category.dart';
 
 class HomePage extends StatefulWidget {
   
@@ -247,10 +253,10 @@ class TopNavigator extends StatelessWidget {
   final List navigatorList;
   const TopNavigator({Key key, this.navigatorList}) : super(key: key);
 
-  Widget _gridViewItemUI(BuildContext context, item) {
+  Widget _gridViewItemUI(BuildContext context,item,index) {
     return InkWell(
       onTap: () {
-        print('点击了导航栏');
+        _goCategory(context,index,item['mallCategoryId']);
       },
       child: Column(
         children: <Widget>[
@@ -265,9 +271,22 @@ class TopNavigator extends StatelessWidget {
       ),
     );
   }
-
+   void _goCategory(context,int index,String categroyId) async {
+    await request('getCategory').then((val) {
+      var data = json.decode(val.toString());
+      CategoryModel category = CategoryModel.fromJson(data);
+      List   list = category.data;
+      Provide.value<ChildCategory>(context).changeCategory(categroyId,index);
+      Provide.value<ChildCategory>(context).getChildCategory( list[index].bxMallSubDto,categroyId);
+      Provide.value<CurrentIndexProvide>(context).changeIndex(1);
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    if(navigatorList.length>10){
+      navigatorList.removeRange(10, navigatorList.length);
+    }
+    var tempIndex=-1;
     return Container(
       height: ScreenUtil().setHeight(320),
       padding: EdgeInsets.all(3.0),
@@ -276,7 +295,8 @@ class TopNavigator extends StatelessWidget {
           physics:NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(3.0),
           children: navigatorList.map((item) {
-            return _gridViewItemUI(context, item);
+            tempIndex++;
+            return _gridViewItemUI(context,item,tempIndex);
           }).toList()),
     );
   }

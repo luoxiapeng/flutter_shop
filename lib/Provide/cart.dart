@@ -140,6 +140,12 @@ class CartProvide with ChangeNotifier{
   remove() async{
      SharedPreferences prefs = await  SharedPreferences.getInstance();
      prefs.remove('cartInfo');
+     //  计算总价格
+     allPrice= 0;
+     //  计算数量
+     allGoodsCount =0;
+     isAllCheck= false; 
+     
      print('清空完成----------------');
      notifyListeners();
   }
