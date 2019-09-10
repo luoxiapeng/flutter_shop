@@ -15,38 +15,38 @@ import './routers/routes.dart';
 import './routers/application.dart';
 import './Provide/cart.dart';
 
+// 启动页面
+import './page/splash_screen/splash_screen.dart';
 
 void main() {
-  
-  var childCategory= ChildCategory();
-  var categoryGoodsListProvide= CategoryGoodsListProvide();
-  var detailsInfoProvide=DetailsInfoProvide();
-  var currentIndexProvide=CurrentIndexProvide();
+  var childCategory = ChildCategory();
+  var categoryGoodsListProvide = CategoryGoodsListProvide();
+  var detailsInfoProvide = DetailsInfoProvide();
+  var currentIndexProvide = CurrentIndexProvide();
   var cartProvide = CartProvide();
 
-  var counter =Counter();
-  var providers  =Providers();
+  var counter = Counter();
+  var providers = Providers();
   providers
     ..provide(Provider<ChildCategory>.value(childCategory))
-    ..provide(Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide))
+    ..provide(
+        Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide))
     ..provide(Provider<DetailsInfoProvide>.value(detailsInfoProvide))
     ..provide(Provider<CartProvide>.value(cartProvide))
     ..provide(Provider<CurrentIndexProvide>.value(currentIndexProvide))
     ..provide(Provider<Counter>.value(counter));
 
-  runApp(ProviderNode(child:MyApp(),providers:providers));
+  runApp(ProviderNode(child: MyApp(), providers: providers));
 }
-
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // 路由配置
-    final router=Router();
+    final router = Router();
     Routes.configureRoutes(router);
-    Application.router=router;
+    Application.router = router;
 
     return MaterialApp(
       title: '百姓生活+',
@@ -54,9 +54,10 @@ class MyApp extends StatelessWidget {
       // 路由配置
       onGenerateRoute: Application.router.generator,
       theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ),
-      home: IndexPage(),
+          primarySwatch: Colors.pink,
+          // 左右滑动
+          platform: TargetPlatform.iOS),
+      home: SplashScreen(),
     );
   }
 
